@@ -61,3 +61,12 @@ RESULTADO: <br>
 <img src="./Imagenes/24.png" alt="drawing"/><br>
 
 ## CAPTURA DE PAQUETES ARP/ICMP:
+Desde PC 10 N2 que se ubica en la oficina c HACIA PC 1 N1 que se ubica en administracion en el primer nivel <br>
+<img src="./Imagenes/25.png" alt="drawing"/><br>
+<img src="./Imagenes/26.png" alt="drawing"/><br>
+<img src="./Imagenes/27.png" alt="drawing"/><br>
+<img src="./Imagenes/28.png" alt="drawing"/><br>
+Se encontro. <br>
+<img src="./Imagenes/29.png" alt="drawing"/><br>
+Transmision de paquetes exitosa. <br>
+<img src="./Imagenes/30.png" alt="drawing"/><br>
