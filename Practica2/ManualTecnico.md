@@ -1,6 +1,6 @@
 # UNIVERSIDAD DE SAN CARLOS DE GUATEMALA
 # REDES DE COMPUTADORAS 1
-# PRACTICA 1 
+# PRACTICA 2
 ## Catedrático: Ing. Pedro Pablo Hernández Ramírez
 ## Auxiliar: Melani López
 ## ALUMNO: Luis Mariano Moreira García
@@ -8,65 +8,220 @@
 
 <br>
 
-## CONFIGURACIONES DE LAS VPCs:
-### NIVEL2
-Tenemos: 202010770 ultimos dos digitos: 70 y nivel 2 <br>
-#### OFICINA A
+## Topología de la red
 <img src="./Imagenes/1.png" alt="drawing"/><br>
-<img src="./Imagenes/2.png" alt="drawing"/><br>
-#### OFICINA B
+## Ping entre VPC11 Y VP12
 <img src="./Imagenes/3.png" alt="drawing"/><br>
+## Configuraciones de las pc
 <img src="./Imagenes/4.png" alt="drawing"/><br>
-#### OFICINA C
 <img src="./Imagenes/5.png" alt="drawing"/><br>
-<img src="./Imagenes/6.png" alt="drawing"/><br>
-### NIVEL1
-Tenemos: 202010770 ultimos dos digitos: 70 y nivel 1 <br>
-#### AREA ADMINISTRACIÓN
-<img src="./Imagenes/7.png" alt="drawing"/><br>
-<img src="./Imagenes/8.png" alt="drawing"/><br>
-#### AREA RECURSOS HUMANOS
-<img src="./Imagenes/9.png" alt="drawing"/><br>
-<img src="./Imagenes/10.png" alt="drawing"/><br>
-#### ATENCIÓN AL CLIENTE
-<img src="./Imagenes/11.png" alt="drawing"/><br>
-<img src="./Imagenes/12.png" alt="drawing"/><br>
-#### GERENCIA
-<img src="./Imagenes/13.png" alt="drawing"/><br>
-<img src="./Imagenes/14.png" alt="drawing"/><br>
 
-## PINGS ENTRE LOS HOSTS:
-Se hará la conexión: <br>
-DESDE: PC 2 N1 en el area de atención al cliente Nivel 1<br>
-<img src="./Imagenes/16.png" alt="drawing"/><br>
-HASTA: PC 5 N2 en la oficina B Nivel 2<br>
-<img src="./Imagenes/17.png" alt="drawing"/><br>
-RESULTADO: <br>
-<img src="./Imagenes/18.png" alt="drawing"/><br>
+## Comandos para verificar:
+- show running-config
+- show standby
 
-Se hará la conexión: <br>
-DESDE: PC 5 N1 en el area de recursos humanos Nivel 1<br>
-<img src="./Imagenes/19.png" alt="drawing"/><br>
-HASTA: PC 9 N1 en el area de recursos humanos Nivel 1<br>
-<img src="./Imagenes/20.png" alt="drawing"/><br>
-RESULTADO: <br>
-<img src="./Imagenes/21.png" alt="drawing"/><br>
+### Creacion del PortChannel PAGP Y LACP
+#### PAGP 
+##### switch 0
+- enable
+- configure terminal
+- interface range f0/11-12
+- channel-group 1 mode desirable
+- exit 
+- interface port-channel 1
+- switchport mode trunk
+- end
+- wr
 
-Se hará la conexión: <br>
-DESDE: PC 1 N2 en la oficina A Nivel 2<br>
-<img src="./Imagenes/22.png" alt="drawing"/><br>
-HASTA: PC 10 N1 en el area de Gerencia Nivel 1<br>
-<img src="./Imagenes/23.png" alt="drawing"/><br>
-RESULTADO: <br>
-<img src="./Imagenes/24.png" alt="drawing"/><br>
+##### switch 1
+- enable
+- configure terminal
+- interface range f0/11-12
+- channel-group 1 mode auto
+- exit 
+- interface port-channel 1
+- switchport mode trunk
+- end
+- wr
 
-## CAPTURA DE PAQUETES ARP/ICMP:
-Desde PC 10 N2 que se ubica en la oficina c HACIA PC 1 N1 que se ubica en administracion en el primer nivel <br>
-<img src="./Imagenes/25.png" alt="drawing"/><br>
-<img src="./Imagenes/26.png" alt="drawing"/><br>
-<img src="./Imagenes/27.png" alt="drawing"/><br>
-<img src="./Imagenes/28.png" alt="drawing"/><br>
-Se encontro. <br>
-<img src="./Imagenes/29.png" alt="drawing"/><br>
-Transmision de paquetes exitosa. <br>
-<img src="./Imagenes/30.png" alt="drawing"/><br>
+#### LACP 
+##### Switch 2-3
+- enable
+- configure terminal
+- interface range f0/11-12
+- channel-group 1 mode active
+- exit
+- interface port-channel 1
+- switchport mode trunk
+- end
+- wr
+
+
+### Configuracion de ip a cada router
+#### R1
+Primera ip configurada:  
+- enable
+- configure terminal
+- interface fa0/1
+- ip address 102.168.2.2 255.255.255.248
+- no shutdown
+Segunda ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.168.1.2 255.255.255.248
+- no shutdown
+Tercera ip configurada:
+- enable
+- configure terminal
+- interface se1/0
+- ip address 10.0.0.1 255.255.255.252
+- no shutdown
+
+#### R2
+Primera ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.168.1.1 255.255.255.248
+- no shutdown
+Segunda ip configurada:
+- enable
+- configure terminal
+- interface fa0/1
+- ip address 102.168.0.2 255.255.255.0
+- no shutdown
+
+#### R3
+Primera ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.168.2.1 255.255.255.248
+- no shutdown
+Segunda ip configurada: 
+- enable
+- configure terminal
+- interface fa0/1
+- ip address 102.168.0.3 255.255.255.0
+- no shutdown
+
+#### R4
+Primera ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.178.1.1 255.255.255.248
+- no shutdown
+Segunda ip configurada: 
+- enable
+- configure terminal
+- interface fa0/1
+- ip address 102.178.2.1 255.255.255.248
+- no shutdown
+Tercera ip configurada: 
+- enable
+- configure terminal
+- interface se1/0
+- ip address 10.0.0.2 255.255.255.252
+- no shutdown
+
+#### R5
+Primera ip configurada: 
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.178.1.2 255.255.255.248
+- no shutdown
+Segunda ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.178.0.2 255.255.255.0
+- no shutdown
+#### R6
+Primera ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.178.2.2 255.255.255.248
+- no shutdown
+Segunda ip configurada:
+- enable
+- configure terminal
+- interface fa0/0
+- ip address 102.178.0.3 255.255.255.0
+- no shutdown
+
+## HSRP 
+### R2
+- enable
+- config t
+- standby 10 ip 102.168.0.1
+- standby 10 priority 150
+- standby 10 preempt
+### R3
+- enable
+- config t
+- standby 10 ip 102.168.0.1
+- standby 10 priority 150
+### R5
+- enable
+- config t
+- standby 10 ip 102.178.0.1
+- standby 10 priority 150
+### R6
+-  enable
+- config t
+-  standby 10 ip 102.178.0.1
+- standby 10 priority 150
+- standby 10 preempt
+
+
+## Configuración de las rutas estatícas
+
+### R1
+- enable
+- config t
+- ip route 102.168.0.0 255.255.255.0 102.168.1.1 
+- ip route 10.0.0.0 255.255.255.252 10.0.0.2 
+- ip route 102.178.1.0 255.255.255.248 10.0.0.2 
+- ip route 102.178.0.0 255.255.255.248 10.0.0.2 
+- ip route 102.178.2.0 255.255.255.248 10.0.0.2 
+### R2
+- enable
+- config t
+- ip route 102.168.1.0 255.255.255.248 102.168.1.2 
+- ip route 10.0.0.0 255.255.255.252 102.168.1.2 
+- ip route 102.178.1.0 255.255.255.248 102.168.1.2 
+- ip route 102.178.0.0 255.255.255.248 102.168.1.2 
+- ip route 102.178.2.0 255.255.255.248 102.168.1.2
+
+### R3
+- enable
+- config t
+- ip route 102.178.0.0 255.255.255.0 102.168.2.2 
+
+### R4
+- enable
+- config t
+- ip route 102.178.0.0 255.255.255.0 102.178.1.2 
+- ip route 102.178.0.0 255.255.255.0 102.178.2.2 
+- ip route 102.168.0.0 255.255.255.0 10.0.0.1 
+- ip route 102.168.2.0 255.255.255.248 10.0.0.1 
+- ip route 102.178.0.0 255.255.255.0 102.178.0.3 
+- ip route 102.168.1.0 255.255.255.248 10.0.0.1 
+
+### R5
+- enable
+- config t
+- ip route 102.178.1.0 255.255.255.248 102.178.1.1 
+- ip route 102.168.0.0 255.255.255.0 102.178.1.1 
+- ip route 10.0.0.0 255.255.255.252 102.178.1.1 
+
+### R6
+- ip route 102.178.2.0 255.255.255.248 102.178.2.1 
+- ip route 102.168.0.0 255.255.255.0 102.178.2.1 
+- ip route 102.168.2.0 255.255.255.248 102.178.2.1 
+- ip route 10.0.0.0 255.255.255.252 102.178.2.1 
+- ip route 102.168.1.0 255.255.255.248 102.178.2.1
